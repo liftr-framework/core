@@ -1,0 +1,20 @@
+{
+  "name": "liftr-core",
+  "version": "1.0.0",
+  "description": "The core package for Liftr",
+  "main": "lib/core.js",
+  "types": "lib/core.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "Faris Tangastani @farisT",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.16.1",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "express": "^4.17.0",
+    "liftr-docs": "^0.2.1"
+  }
+}
