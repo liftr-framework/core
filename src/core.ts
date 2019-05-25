@@ -37,7 +37,7 @@ export class Liftr {
      * @type {Application}
      * @param app  An express Application is passed here to start the server
      */
-    static setRoutes(routes: AppRouter[], app:Application) {
+    static setRoutes(routes: AppRouter[], app: Application) {
         return routes.forEach((route: AppRouter) => app.use(route.path, route.middleware, route.handler));
     }
 

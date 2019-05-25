@@ -1,6 +1,6 @@
 # liftr-core
 
-Liftr core provides some core functionality for the Liftr framework.
+Liftr core provides essential functionality for the Liftr framework.
 
 ## Installation
 
@@ -11,3 +11,9 @@ Otherwise:
 ```
 npm install liftr-core --save
 ```
+
+## Methods
+
+- [server](docs/server.md)
+- [setRoutes](docs/setRoutes.md)
+- [useDocs](docs/useDocs.md)
