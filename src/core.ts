@@ -57,6 +57,16 @@ export class Liftr {
     static useDocs(app: Application, routes:AppRouter[], swaggerDescriptions: SwaggerDescriptions, swaggerResponses: SwaggerResponses) {
         return app.use('/docs', LiftrDocs(routes, swaggerDescriptions, swaggerResponses));
     }
+
+    // static RoutingModule(routes: any){
+    //     console.log(routes);
+    //     // routes[0].middleware.push('hello')
+    //     // console.log(routes[0].handler.name)
+    // }
+
+    // static Route() {
+    //     return Router();
+    // }
 }
 
 /**
