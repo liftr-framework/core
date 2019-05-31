@@ -1,7 +1,7 @@
 {
   "name": "@liftr/core",
   "version": "0.0.1",
-  "description": "The core package for Liftr",
+  "description": "The core package for the Liftr framework",
   "main": "lib/core.js",
   "types": "lib/core.d.ts",
   "scripts": {
