@@ -1,13 +1,13 @@
 import { Application, Router, RequestHandler } from 'express';
 import { LiftrDocs } from '@liftr/docs';
 import { SwaggerRequestBody, SwaggerDescriptionInfo, SwaggerServers } from './interfaces';
-import { Schema } from 'joi';
+import * as joiObject from 'joi';
 
 declare global {
     namespace Express {
       interface Request  {
         session?: Session;
-        validate(data: string| Object, schema: Schema): Promise<any>;
+        validate(data: string| Object, schema: joi.Schema): Promise<any>;
       }
       interface SessionData {
         [key: string]: any;
@@ -85,7 +85,6 @@ export class Liftr {
 
     public useDocs(app: Application, routes:AppRouter[], swaggerDescriptions: SwaggerDescriptions, swaggerResponses: SwaggerResponses) {
         return app.use('/docs', LiftrDocs(routes, swaggerDescriptions, swaggerResponses));
-
     }
 }
 
@@ -115,7 +114,21 @@ export function useDocs(
     return app.use('/docs', LiftrDocs(routes, swaggerDescriptions, swaggerResponses));
 }
 
+async function validate(data: string | Object, schema: joi.Schema ) {
+    console.log('hahahahahah')
+}
+
+function setValidateObject(app: Application) {
+    app.use((req, res, next) => {
+        req.validate = validate;
+        next();
+    });
+}
+
+
+
 export function server(app: Application, routes: AppRouter[]) {
+    setValidateObject(app);
     setRoutes(app, routes);
     return app.listen(app.get('port'), () => {
         console.log(
@@ -125,6 +138,12 @@ export function server(app: Application, routes: AppRouter[]) {
         );
     });
 }
+
+/**
+ * define joi dependency for use within api
+ * make sure to keep joi updated
+ */
+export const joi = joiObject;
 
 /**
  * AppRouter interface contains the necessary typing for the LiftrRoutingModule
