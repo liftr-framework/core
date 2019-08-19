@@ -4,6 +4,8 @@
     <img alt="Liftr logo" src="./logo.png">
 </p>
 
+[![npmversion](https://img.shields.io/npm/v/@liftr/core.svg?style=for-the-badge)](https://github.com/farisT/liftr)
+
 Provides essential functionality for the Liftr framework.
 
 ## Installation
@@ -20,3 +22,5 @@ npm install @liftr/core --save
 
 - [server](docs/server.md)
 - [useDocs](docs/useDocs.md)
+- [req.validate](docs/req.validate.md)
+

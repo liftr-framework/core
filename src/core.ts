@@ -1,4 +1,4 @@
-import { Application, Router, RequestHandler } from 'express';
+import { Router , Application } from 'express';
 import { LiftrDocs } from '@liftr/docs';
 import { SwaggerRequestBody, SwaggerDescriptionInfo, SwaggerServers } from './interfaces';
 import * as Joi from 'joi';
@@ -6,16 +6,17 @@ import { Server } from 'http';
 
 declare global {
     namespace Express {
-      interface Request  {
-        validate(data: Object | string, schema: Joi.Schema): Promise<any>;
+     export interface Request  {
+        validate(data: any, schema: Joi.Schema): Promise<any>;
       }
-    }
   }
+}
 
 /**
  * The setRoutes method loops through the routes and sets them on the Application server
 */
 function setRoutes(app: Application, routes: AppRouter[]) {
+    routes.forEach((route: AppRouter) => console.log(route.handler.stack[0].route.stack[0]));
     return routes.forEach((route: AppRouter) => app.use(route.path, route.middleware, route.handler));
 }
 
@@ -29,7 +30,7 @@ function setRoutes(app: Application, routes: AppRouter[]) {
  */
 export function useDocs(
     app: Application, 
-    routes:AppRouter[],
+    routes: AppRouter[],
     swaggerDescriptions: SwaggerDescriptions,
     swaggerResponses: SwaggerResponses
     ) : Application
@@ -37,31 +38,28 @@ export function useDocs(
     return app.use('/docs', LiftrDocs(routes, swaggerDescriptions, swaggerResponses));
 }
 
-
 /**
  * joi validation under the hood passing the data and schema
  */
-async function validate(data: Object | string, schema: Joi.Schema): Promise<any> {
-    return Joi.validate(data, schema)
+function validate(data: any, schema: Joi.SchemaLike, options?: Joi.ValidationOptions): any {
+    return Joi.validate(data, schema, options)
 }
 
 /**
- * Applies the req.validate to the request object with custom joi validation function
+ * Applies the req.validate to the request object with joi validation function
  */
-function setValidateObject(app: Application): void {
+function setValidationObject(app: Application): void {
     app.use((req, res, next) => {
         req.validate = validate;
         next();
     });
 }
 
-    /**
-     * The server method runs the Application that is passed based on the port and configuration already set
-     * @param {Application} app  An express Application is passed here to start the server
-     * @param {AppRouter[]} routes  An express Application is passed here to start the server
-     */
-export function server(app: Application, routes: AppRouter[]): Server {
-    setValidateObject(app);
+/**
+ * The server method runs the Application that is passed based on the port and configuration already set
+ */
+export function server(app: Application, routes: AppRouter[]) : Server {
+    setValidationObject(app);
     setRoutes(app, routes);
     return app.listen(app.get('port'), () => {
         console.log(
@@ -74,7 +72,6 @@ export function server(app: Application, routes: AppRouter[]): Server {
 
 /**
  * define joi dependency for use within api
- * make sure to keep joi updated
  */
 export const joi = Joi;
 
