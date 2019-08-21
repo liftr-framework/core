@@ -1,4 +1,4 @@
-import { Router , Application } from 'express';
+import { Router , Application, RequestHandler } from 'express';
 import { LiftrDocs } from '@liftr/docs';
 import { SwaggerRequestBody, SwaggerDescriptionInfo, SwaggerServers } from './interfaces';
 import * as Joi from 'joi';
@@ -55,6 +55,21 @@ function setValidationObject(app: Application): void {
     });
 }
 
+export function routeSchema(any: any) {
+    console.log(any)
+}
+
+function RoutingModule(routes: RoutingModule[]) {
+    console.log()
+}
+
+class Module {
+
+}
+
+// export const Routing = new LiftrRouter();
+
+
 /**
  * The server method runs the Application that is passed based on the port and configuration already set
  */
@@ -99,7 +114,14 @@ export interface SwaggerResponses {
  */
 export interface SwaggerDescriptions {
     info: SwaggerDescriptionInfo;
-    servers: [SwaggerServers]
+    servers: SwaggerServers[]
     openapi: string;
     paths?: any;
+}
+
+export interface RoutingModule {
+    path: string;
+    module: RoutingModule;
+    schema?: Joi.SchemaLike;
+    children?: RoutingModule[]
 }
