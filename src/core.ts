@@ -55,17 +55,80 @@ function setValidationObject(app: Application): void {
     });
 }
 
-export function routeSchema(any: any) {
-    console.log(any)
+// export const router = Router();
+export const Route  =  {
+    get(path:string, ...handlers: RequestHandler[]) {
+        return {
+            path,
+            method: 'get',
+            handlers
+        }
+    },
+    post(path:string, ...handlers: RequestHandler[]) {
+        return {
+            path,
+            method: 'post',
+            handlers
+        }
+    },
+    patch(path:string, ...handlers: RequestHandler[]) {
+        return {
+            path,
+            method: 'patch',
+            handlers
+        }
+    },
+    delete(path:string, ...handlers: RequestHandler[]) {
+        return {
+            path,
+            method: 'delete',
+            handlers
+        }
+    },
+    put(path:string, ...handlers: RequestHandler[]) {
+        return {
+            path,
+            method: 'put',
+            handlers
+        }
+    }
+};
+
+
+function routerBuilder(router: Router, path:string, method: string, handlers: any) {
+        switch(method) {
+            case 'get':
+                router = router.put(path, ...handlers)
+                return router;
+            case 'post':
+                router = router.post(path, ...handlers)
+                return router;
+            case 'patch':
+                router = router.patch(path, ...handlers)
+                return router;
+            case 'delete':
+                router = router.delete(path, ...handlers)
+                return router;
+            case 'put':
+              router = router.put(path, ...handlers)
+              return router;
+          }
 }
 
-function RoutingModule(routes: RoutingModule[]) {
-    console.log()
+// this function is good as last level of the routing not subRouting
+export function Module(moduleData:any[]) {
+    const router = Router();
+    const variables = moduleData.map((object: any) => object.route);
+    // this is the mapped routes
+    const routers  = variables.map((routeInfo) => {
+        const { path, method, handlers } = routeInfo;
+        return routerBuilder(router, path, method, handlers)
+    })
+    return routers;
 }
-
-class Module {
-
-}
+// export class Module {
+//     constructor(routes){}
+// }
 
 // export const Routing = new LiftrRouter();
 
@@ -73,9 +136,11 @@ class Module {
 /**
  * The server method runs the Application that is passed based on the port and configuration already set
  */
-export function server(app: Application, routes: AppRouter[]) : Server {
-    setValidationObject(app);
-    setRoutes(app, routes);
+export function server(app: Application, routes: Routes[]) : Server {
+    // map routes.module and then map it again
+    subRouteMapping(routes)
+    // setValidationObject(app);
+    // setRoutes(app, subRoutes);
     return app.listen(app.get('port'), () => {
         console.log(
             'App is running on http://localhost:%d in %s mode',
@@ -83,6 +148,13 @@ export function server(app: Application, routes: AppRouter[]) : Server {
             app.get('env'),
         );
     });
+}
+
+function subRouteMapping(routes: any) :Router[] {
+    const modules = routes.map((route:any) => route.module);
+    console.log(modules[0][0]);
+    const subRoutes = modules.map((routeObject:any) => routeObject.route);
+    return subRoutes;
 }
 
 /**
@@ -119,9 +191,16 @@ export interface SwaggerDescriptions {
     paths?: any;
 }
 
-export interface RoutingModule {
+export interface Routes {
     path: string;
-    module: RoutingModule;
+    module: ModuleRoutes[];
+    middleware?: any[];
     schema?: Joi.SchemaLike;
-    children?: RoutingModule[]
+    children?: Routes[]
+}
+
+interface ModuleRoutes {
+    route: Router;
+    middleware?: any[];
+    schema?: Joi.SchemaLike;
 }
