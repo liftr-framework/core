@@ -3,7 +3,7 @@ import { LiftrDocs } from '@liftr/docs';
 import { SwaggerRequestBody, SwaggerDescriptionInfo, SwaggerServers } from './interfaces';
 import * as Joi from 'joi';
 import { Server } from 'http';
-
+import moduleCreator  from './router';
 declare global {
     namespace Express {
      export interface Request  {
@@ -15,9 +15,8 @@ declare global {
 /**
  * The setRoutes method loops through the routes and sets them on the Application server
 */
-function setRoutes(app: Application, routes: AppRouter[]) {
-    routes.forEach((route: AppRouter) => console.log(route.handler.stack[0].route.stack[0]));
-    return routes.forEach((route: AppRouter) => app.use(route.path, route.middleware, route.handler));
+function setRoutes(app: Application, routes: Routes[]) {
+    return routes.forEach((route: Routes) => app.use(route.path, route.middleware, route.module));
 }
 
 /**
@@ -55,7 +54,6 @@ function setValidationObject(app: Application): void {
     });
 }
 
-// export const router = Router();
 export const Route  =  {
     get(path:string, ...handlers: RequestHandler[]) {
         return {
@@ -95,52 +93,17 @@ export const Route  =  {
 };
 
 
-function routerBuilder(router: Router, path:string, method: string, handlers: any) {
-        switch(method) {
-            case 'get':
-                router = router.put(path, ...handlers)
-                return router;
-            case 'post':
-                router = router.post(path, ...handlers)
-                return router;
-            case 'patch':
-                router = router.patch(path, ...handlers)
-                return router;
-            case 'delete':
-                router = router.delete(path, ...handlers)
-                return router;
-            case 'put':
-              router = router.put(path, ...handlers)
-              return router;
-          }
-}
-
-// this function is good as last level of the routing not subRouting
-export function Module(moduleData:any[]) {
-    const router = Router();
-    const variables = moduleData.map((object: any) => object.route);
-    // this is the mapped routes
-    const routers  = variables.map((routeInfo) => {
-        const { path, method, handlers } = routeInfo;
-        return routerBuilder(router, path, method, handlers)
-    })
-    return routers;
-}
 // export class Module {
 //     constructor(routes){}
 // }
-
-// export const Routing = new LiftrRouter();
-
 
 /**
  * The server method runs the Application that is passed based on the port and configuration already set
  */
 export function server(app: Application, routes: Routes[]) : Server {
     // map routes.module and then map it again
-    subRouteMapping(routes)
-    // setValidationObject(app);
-    // setRoutes(app, subRoutes);
+    setValidationObject(app);
+    setRoutes(app, routes);
     return app.listen(app.get('port'), () => {
         console.log(
             'App is running on http://localhost:%d in %s mode',
@@ -150,18 +113,12 @@ export function server(app: Application, routes: Routes[]) : Server {
     });
 }
 
-function subRouteMapping(routes: any) :Router[] {
-    const modules = routes.map((route:any) => route.module);
-    console.log(modules[0][0]);
-    const subRoutes = modules.map((routeObject:any) => routeObject.route);
-    return subRoutes;
-}
 
 /**
  * define joi dependency for use within api
  */
 export const joi = Joi;
-
+export const Module = moduleCreator;
 /**
  * AppRouter interface contains the necessary typing for the LiftrRoutingModule
  */
@@ -193,14 +150,13 @@ export interface SwaggerDescriptions {
 
 export interface Routes {
     path: string;
-    module: ModuleRoutes[];
-    middleware?: any[];
+    module: Router;
+    middleware: any[];
     schema?: Joi.SchemaLike;
-    children?: Routes[]
 }
 
-interface ModuleRoutes {
+export interface ModuleInterface {
     route: Router;
-    middleware?: any[];
+    middleware: any[];
     schema?: Joi.SchemaLike;
 }
