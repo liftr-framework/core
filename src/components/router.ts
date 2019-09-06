@@ -1,5 +1,7 @@
-import { Router, RequestHandler, Application } from "express";
-import { RouteComponent, ModuleData, AppRouter } from "../interfaces";
+import { Router, RequestHandler } from "express";
+import { RouteComponent, ModuleData } from "../interfaces";
+import joiToSwagger from 'joi-to-swagger';
+
 
 export function Module(moduleData: ModuleData[]) {
     const router = Router();
@@ -7,7 +9,13 @@ export function Module(moduleData: ModuleData[]) {
         const middleware = moduleData[index].middleware;
         const { path , method, handlers } = moduleData[index].route;
         routerBuilder(router, path, method, middleware, handlers)
+        // if(moduleData[index].schema) {
+        //     const { swagger } = joiToSwagger(moduleData[index].schema);
+        //     console.log('---------------------------------', swagger)
+        // }
+
     };
+    
     // variables.map((routeInfo) => {
     //     const { path, method, handlers } = routeInfo;
     //     return routerBuilder(router, path, method, handlers)

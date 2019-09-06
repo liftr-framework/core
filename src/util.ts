@@ -1,19 +1,11 @@
 import { Application } from "express";
-import { SchemaLike, ValidationOptions } from "joi";
+import { ValidationOptions, Schema } from "joi";
 import { AppRouter } from "./interfaces";
 
-
-declare global {
-    namespace Express {
-        export interface Request  {
-        validate(data: any, schema: SchemaLike): Promise<any>;
-      }
-  }
-}
 /**
  * joi validation under the hood passing the data and schema
  */
-export function validate(data: any, schema: SchemaLike, options?: ValidationOptions): any {
+export function validate(data: any, schema: Schema, options?: ValidationOptions): any {
     const validation = require('joi').validate;
     return validation(data, schema, options)
 }
@@ -34,3 +26,12 @@ export function setValidationObject(app: Application): void {
 export function setRoutes(app: Application, routes: AppRouter[]) {
     return routes.forEach((route: AppRouter) => app.use(route.path, route.middleware, route.module.router));
 }
+
+/**
+ * flatten arrays that are nested
+*/
+export function flatten(arr) {
+    return arr.reduce(function (flat, toFlatten) {
+      return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+    }, []);
+  }

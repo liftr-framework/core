@@ -1,7 +1,9 @@
-// import * as express from 'express';
+import { Router } from 'express';
 
 import * as swaggerUi from 'swagger-ui-express';
-import { AppRouter, ModuleData, SwaggerDescriptions, SwaggerResponses, DocumentationObject } from '../interfaces';
+import { ModuleData, SwaggerDescriptions, SwaggerResponses, DocumentationObject } from '../interfaces';
+import joiToSwagger from 'joi-to-swagger';
+import { flatten } from '../util';
 
 /**
  * Provides functionality to document all the routes passed in swagger
@@ -11,35 +13,29 @@ import { AppRouter, ModuleData, SwaggerDescriptions, SwaggerResponses, Documenta
  */
 
 export function docs (documentationObject: DocumentationObject[], swaggerDescriptions: SwaggerDescriptions, swaggerResponses: SwaggerResponses)  {
+
     const endpointDefinitions = documentationObject.map((docData: DocumentationObject) => {
         const parentRoute = docData.parentRoute;
-
         const preparedObject = docData.moduleData.map((moduleData: ModuleData) => {
             const routeData = moduleData.route;
-            return prepareObject(routeData, parentRoute, swaggerResponses);
+            const validationSchema = moduleData.schema;
+            if(validationSchema) {
+                const { swagger } = joiToSwagger(validationSchema);
+                swaggerResponses.requestBody.content['application/json'].schema = swagger;
+            }
+            return  prepareObject(routeData, parentRoute, swaggerResponses);
         })
-        const mergedData = mergeLogic(preparedObject);
-        console.log(mergedData);
-    })
-    // const endpointDefinitions = routes.map((route: AppRouter) => {
-    //     let returnObject: any = {};
-    //     const parentRoute = route.path;
+        return preparedObject;
+    });
 
-    //     const mergedData = mergeLogic(preparedObject);
-    //     // cleanup the final data with the final object
-    //     mergedData.map((data:any) => {
-    //         const paths = Object.keys(data)[0]
-    //         const methods = Object.values(data)[0]
-    //         Object.assign(returnObject, {[paths]:methods})
-    //     })
-    //     return returnObject;
-    // });
+    const flattened = flatten(endpointDefinitions)
+    const merge = mergeLogic(flattened);
 
-//   swaggerDescriptions.paths = endpointDefinitions.reduce((acc, cur) => Object.assign(acc, cur));
-//   const router = express.Router();
-//   router.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDescriptions));
+  swaggerDescriptions.paths = merge.reduce((acc, cur) => Object.assign(acc, cur));
+  const router = Router();
+  router.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDescriptions));
 
-//   return router;
+  return router;
 };
 
 function prepareObject (routeData: any, parentRoute: string, swaggerResponses: SwaggerResponses) {

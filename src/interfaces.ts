@@ -1,9 +1,9 @@
 import { Router, RequestHandler } from "express";
-import { SchemaLike } from "joi";
+import { Schema } from "joi";
 
 export interface SwaggerRequestBody {
     required:boolean;
-    content?: SwaggerContent;
+    content: SwaggerContent;
     description?: string;
 }
 export interface SwaggerContent {
@@ -32,7 +32,7 @@ export interface AppRouter {
     path: string;
     module: ModuleReturnData;
     middleware: any[];
-    schema?: SchemaLike;
+    schema?: Schema;
 }
 
 /**
@@ -58,7 +58,7 @@ export interface SwaggerDescriptions {
 export interface ModuleData {
     route: RouteComponent;
     middleware: any[];
-    schema?: SchemaLike;
+    schema?: Schema;
 }
 
 export interface DocumentationObject {

@@ -1,6 +1,6 @@
 import { Application } from 'express';
 import { SwaggerDescriptions, AppRouter, SwaggerResponses, ModuleData, DocumentationObject } from './interfaces';
-import * as Joi from 'joi';
+import Joi from 'joi';
 import { Server } from 'http';
 import { setValidationObject, setRoutes } from './util';
 import { docs } from './components/docs';
@@ -20,15 +20,13 @@ export function useDocs(
     swaggerResponses: SwaggerResponses
     )
 {   
-    // console.log(routes);
     const combinedData: DocumentationObject[] = routes.map((route) => {
         return {
             moduleData: route.module.moduleData.map((data: ModuleData) =>  data),
             parentRoute: route.path
         }
     });
-    // return app.use('/docs', docs(moduleData, swaggerDescriptions, swaggerResponses));
-    docs(combinedData, swaggerDescriptions, swaggerResponses)
+    return app.use('/docs', docs(combinedData, swaggerDescriptions, swaggerResponses));
 }
 
 /**

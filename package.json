@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "rm -rf lib && tsc"
   },
   "author": "Faris Tangastani @farisT",
   "license": "MIT",
@@ -18,7 +18,8 @@
   "dependencies": {
     "@liftr/docs": "^0.2.1",
     "express": "^4.17.0",
-    "joi": "^14.3.1",
+    "joi": "^13.3.0",
+    "joi-to-swagger": "^3.2.0",
     "swagger-ui-express": "^4.0.7"
   }
 }
