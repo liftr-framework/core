@@ -1,4 +1,4 @@
-import { Application } from "express";
+import { Application, Request, Response, NextFunction } from "express";
 import { ValidationOptions, Schema } from "joi";
 import { AppRouter } from "./interfaces";
 
@@ -14,7 +14,7 @@ export function validate(data: any, schema: Schema, options?: ValidationOptions)
  * Applies the req.validate to the request object with joi validation function
  */
 export function setValidationObject(app: Application): void {
-    app.use((req, res, next) => {
+    app.use((req: Request, res: Response, next: NextFunction) => {
         req.validate = validate;
         next();
     });

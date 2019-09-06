@@ -1,7 +1,5 @@
 import { Router, RequestHandler } from "express";
 import { RouteComponent, ModuleData } from "../interfaces";
-import joiToSwagger from 'joi-to-swagger';
-
 
 export function Module(moduleData: ModuleData[]) {
     const router = Router();
@@ -9,50 +7,40 @@ export function Module(moduleData: ModuleData[]) {
         const middleware = moduleData[index].middleware;
         const { path , method, handlers } = moduleData[index].route;
         routerBuilder(router, path, method, middleware, handlers)
-        // if(moduleData[index].schema) {
-        //     const { swagger } = joiToSwagger(moduleData[index].schema);
-        //     console.log('---------------------------------', swagger)
-        // }
-
     };
-    
-    // variables.map((routeInfo) => {
-    //     const { path, method, handlers } = routeInfo;
-    //     return routerBuilder(router, path, method, handlers)
-    // })
     return { router, moduleData };
 }
 
 export const Route  =  {
-    get(path:string, ...handlers: RequestHandler[]): RouteComponent {
+    get(path: string, ...handlers: RequestHandler[]): RouteComponent {
         return {
             path,
             method: 'get',
             handlers
         }
     },
-    post(path:string, ...handlers: RequestHandler[]): RouteComponent {
+    post(path: string, ...handlers: RequestHandler[]): RouteComponent {
         return {
             path,
             method: 'post',
             handlers
         }
     },
-    patch(path:string, ...handlers: RequestHandler[]): RouteComponent {
+    patch(path: string, ...handlers: RequestHandler[]): RouteComponent {
         return {
             path,
             method: 'patch',
             handlers
         }
     },
-    delete(path:string, ...handlers: RequestHandler[]): RouteComponent {
+    delete(path: string, ...handlers: RequestHandler[]): RouteComponent {
         return {
             path,
             method: 'delete',
             handlers
         }
     },
-    put(path:string, ...handlers: RequestHandler[]): RouteComponent {
+    put(path: string, ...handlers: RequestHandler[]): RouteComponent {
         return {
             path,
             method: 'put',

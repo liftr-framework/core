@@ -3,8 +3,6 @@ export * from './interfaces';
 export * from './components/router';
 import { ValidationOptions, Schema } from "joi";
 
-
-
 declare global {
     namespace Express {
         export interface Request  {
