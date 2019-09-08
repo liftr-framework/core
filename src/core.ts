@@ -1,6 +1,5 @@
 import { Application } from 'express';
 import { SwaggerDescriptions, AppRouter, SwaggerResponses, ModuleData, DocumentationObject } from './interfaces';
-import Joi from 'joi';
 import { Server } from 'http';
 import { setValidationObject, setRoutes } from './util';
 import { docs } from './components/docs';
@@ -23,7 +22,7 @@ export function useDocs(
     const combinedData: DocumentationObject[] = routes.map((route) => {
         return {
             moduleData: route.module.moduleData.map((data: ModuleData) =>  data),
-            parentRoute: route.path
+            parentRoute: route.path,
         }
     });
     return app.use('/docs', docs(combinedData, swaggerDescriptions, swaggerResponses));
@@ -43,9 +42,3 @@ export function server(app: Application, routes: AppRouter[]) : Server {
         );
     });
 }
-
-
-/**
- * define joi dependency for use within api
- */
-export const joi = Joi;

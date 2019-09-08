@@ -6,7 +6,7 @@ export function Module(moduleData: ModuleData[]) {
     for (let index = 0; index < moduleData.length; index++) {
         const middleware = moduleData[index].middleware;
         const { path , method, handlers } = moduleData[index].route;
-        routerBuilder(router, path, method, middleware, handlers)
+        routerBuilder(router, path, method, middleware, handlers);
     };
     return { router, moduleData };
 }
@@ -16,35 +16,35 @@ export const Route  =  {
         return {
             path,
             method: 'get',
-            handlers
+            handlers,
         }
     },
     post(path: string, ...handlers: RequestHandler[]): RouteComponent {
         return {
             path,
             method: 'post',
-            handlers
+            handlers,
         }
     },
     patch(path: string, ...handlers: RequestHandler[]): RouteComponent {
         return {
             path,
             method: 'patch',
-            handlers
+            handlers,
         }
     },
     delete(path: string, ...handlers: RequestHandler[]): RouteComponent {
         return {
             path,
             method: 'delete',
-            handlers
+            handlers,
         }
     },
     put(path: string, ...handlers: RequestHandler[]): RouteComponent {
         return {
             path,
             method: 'put',
-            handlers
+            handlers,
         }
     }
 };
@@ -53,19 +53,19 @@ export const Route  =  {
 function routerBuilder(router: Router, path: string, method: string, middleware: any[], handlers: any): Router {
     switch(method) {
         case 'get':
-            router = router.get(path, ...middleware, ...handlers)
+            router = router.get(path, ...middleware, ...handlers);
             break;
         case 'post':
-            router = router.post(path, ...middleware, ...handlers)
+            router = router.post(path, ...middleware, ...handlers);
             break;
         case 'patch':
-            router = router.patch(path, ...middleware, ...handlers)
+            router = router.patch(path, ...middleware, ...handlers);
             break;
         case 'delete':
-            router = router.delete(path, ...middleware, ...handlers)
+            router = router.delete(path, ...middleware, ...handlers);
             break;
         case 'put':
-          router = router.put(path, ...middleware, ...handlers)
+          router = router.put(path, ...middleware, ...handlers);
           break;
         default:
             break;

@@ -4,11 +4,10 @@ import * as swaggerUi from 'swagger-ui-express';
 import { ModuleData, SwaggerDescriptions, SwaggerResponses, DocumentationObject } from '../interfaces';
 import joiToSwagger from 'joi-to-swagger';
 import { flatten } from '../util';
-import { Schema } from 'joi';
 
 /**
  * Provides functionality to document all the routes passed in swagger
- * @param routes  The LiftrRoutingModule routes should be passed to here.
+ * @param documentationObject[]  A documentation object array is created in useDocs before its passed through this parameter.
  * @param swaggerDescriptions  An object which defines the standard swagger info (e.g. url, version, title).
  * @param swaggerResponses  An object which defines the responses for each end point, add the structure related to Swagger here  (e.g. requestBody, responses, description).
  */
@@ -18,14 +17,13 @@ export function docs (documentationObject: DocumentationObject[], swaggerDescrip
     const endpointDefinitions = documentationObject.map((docData: DocumentationObject) => {
         const parentRoute = docData.parentRoute;
         const preparedObject = docData.moduleData.map((moduleData: ModuleData) => {
-            const swaggerResponse = JSON.parse(JSON.stringify(swaggerResponses));
-            const routeData = moduleData.route;
-            const validationSchema = moduleData.schema;
-            if(validationSchema !== undefined) {
-                const { swagger } = joiToSwagger(validationSchema);
+            const swaggerResponse: SwaggerResponses = JSON.parse(JSON.stringify(swaggerResponses));
+            const { route, schema } = moduleData;
+            if(schema !== undefined) {
+                const { swagger } = joiToSwagger(schema);
                 swaggerResponse.requestBody.content['application/json'].schema = swagger;
             }
-            return  prepareObject(routeData, parentRoute, swaggerResponse);
+            return  prepareObject(route, parentRoute, swaggerResponse);
         })
         return preparedObject;
     });
@@ -41,29 +39,31 @@ export function docs (documentationObject: DocumentationObject[], swaggerDescrip
   return router;
 };
 
+/**
+ * Setup the swagger object strucuture
+ */
 function prepareObject (routeData: any, parentRoute: string, swaggerResponses: SwaggerResponses) {
-    const obj :any = {};
-    const paths = routeData.path;
-    const methods = routeData.method;
-    let fullPath = parentRoute + paths;
-    if (parentRoute === '/' && paths === '/') {
-        fullPath = parentRoute;
-    }
-    else if (parentRoute === '/' && paths !== '/') {
-        fullPath = paths;
-    }
+    const obj: any = {};
+    const{ path, method } = routeData;
+    let fullPath = parentRoute + path;
+
+    if (parentRoute === '/' && path === '/') fullPath = parentRoute;
+    else if (parentRoute === '/' && path !== '/') fullPath = path;
+
     const swaggerGroups = {
-        [fullPath]: {[methods]:swaggerResponses}
+        [fullPath]: {[method]:swaggerResponses}
     }
 
-    const newObj = Object.assign(obj, swaggerGroups);
-    return newObj;
+   return Object.assign(obj, swaggerGroups);
 };
 
-
+/**
+ * Merge all the objects together in one object
+ * Runs checkIfExist to filter out existing paths or multiple methods on the same path
+ */
 const mergeLogic = (preparedData: any) => {
     const mergedData: any = [];
-    preparedData.map( (routeObject:any, i: number) => {
+    preparedData.map((routeObject: any, i: number) => {
         const key = Object.keys(routeObject);
         // asigning the first value to the finished array
         if(i === 0) {
@@ -76,7 +76,10 @@ const mergeLogic = (preparedData: any) => {
     return mergedData;
 }
 
-
+/**
+ * Check if the path already exists
+ * if it does push the existing data to the same path as another method
+ */
 const checkIfExist = (routeArray: any[], adderRoute: any, routeDirection: string) => {
     // loop through completing object and match any already known routes
     const actualLength = routeArray.length - 1;
@@ -90,7 +93,7 @@ const checkIfExist = (routeArray: any[], adderRoute: any, routeDirection: string
         // if match add it to the corresponding route
         if(Object.keys(routeArray[index])[0] === adderDirection) {
             Object.assign(routeArray[index][routeDirection], method);
-            return
+            return;
         }
         // if we reach the end of the array and still no matches, add it as a seperate route
         if(actualLength === index && Object.keys(routeArray[index])[0] !== adderDirection) {

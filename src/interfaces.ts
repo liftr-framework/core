@@ -1,5 +1,5 @@
-import { Router, RequestHandler } from "express";
-import { Schema } from "joi";
+import { Router, RequestHandler } from 'express';
+import { Schema } from 'joi';
 
 export interface SwaggerRequestBody {
     required:boolean;
