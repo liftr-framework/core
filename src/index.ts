@@ -15,6 +15,6 @@ declare global {
  * define joi dependency for use within api
  */
 export {
-  Joi
+  Joi,
 };
 

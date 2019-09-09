@@ -51,7 +51,7 @@ function prepareObject (routeData: any, parentRoute: string, swaggerResponses: S
     else if (parentRoute === '/' && path !== '/') fullPath = path;
 
     const swaggerGroups = {
-        [fullPath]: {[method]:swaggerResponses}
+        [fullPath]: {[method]:swaggerResponses},
     }
 
    return Object.assign(obj, swaggerGroups);

@@ -46,7 +46,7 @@ export const Route  =  {
             method: 'put',
             handlers,
         }
-    }
+    },
 };
 
 

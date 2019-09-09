@@ -16,7 +16,7 @@ export function useDocs(
     app: Application, 
     routes: any[],
     swaggerDescriptions: SwaggerDescriptions,
-    swaggerResponses: SwaggerResponses
+    swaggerResponses: SwaggerResponses,
     )
 {   
     const combinedData: DocumentationObject[] = routes.map((route) => {
