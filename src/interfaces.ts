@@ -57,8 +57,8 @@ export interface SwaggerDescriptions {
 
 export interface ModuleData {
     route: RouteComponent;
-    middleware: any[];
     schema?: Schema;
+    middleware: any[];
 }
 
 export interface DocumentationObject {
@@ -66,9 +66,9 @@ export interface DocumentationObject {
     parentRoute: string;
 }
 
-interface ModuleReturnData {
+export interface ModuleReturnData {
     router: Router;
-    moduleData: ModuleData;
+    moduleData: ModuleData[];
 }
 
 export interface RouteComponent {

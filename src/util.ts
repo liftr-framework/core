@@ -1,6 +1,6 @@
-import { Application, Request, Response, NextFunction } from "express";
-import { ValidationOptions, Schema } from "joi";
-import { AppRouter } from "./interfaces";
+import { Application, Request, Response, NextFunction } from 'express';
+import { ValidationOptions, Schema } from 'joi';
+import { AppRouter } from './interfaces';
 
 declare global {
     namespace Express {
