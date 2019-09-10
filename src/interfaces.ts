@@ -36,8 +36,8 @@ export interface AppRouter {
 }
 
 /**
- * The SwaggerResponses interface is used to categorize the necessary swagger fields for liftr-docs
- * For more info check https://github.com/farisT/liftr-docs
+ * The SwaggerResponses interface is used to categorize the necessary swagger fields
+ * An object which defines the responses for each end point, add the structure related to Swagger here  (e.g. requestBody, responses, description).
  */
 export interface SwaggerResponses {
     responses?: any;
@@ -45,8 +45,8 @@ export interface SwaggerResponses {
 }
 
 /**
- * The SwaggerDescriptions interface is used to categorize the necessary swagger fields for liftr-docs
- * For more info check https://github.com/farisT/liftr-docs
+ * The SwaggerDescriptions interface is used to categorize the necessary swagger fields
+ * An object which defines the standard swagger info (e.g. url, version, title).
  */
 export interface SwaggerDescriptions {
     info: SwaggerDescriptionInfo;
@@ -60,6 +60,7 @@ export interface ModuleData {
     schema?: Schema;
     middleware: any[];
 }
+
 
 export interface DocumentationObject {
     moduleData: ModuleData[];

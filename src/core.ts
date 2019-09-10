@@ -5,16 +5,11 @@ import { setValidationObject, setRoutes } from './util';
 import { docs } from './components/docs';
 
 /**
- * The useDocs runs LiftrDocs under the hood.
- * Refer to the documentation for more details https://github.com/farisT/liftr-docs
- * @param {} app  An express Application is passed here to start the server
- * @param {any[]} routes The routes setup in the LiftrRoutingModule are passed here
- * @param  {SwaggerDescriptions} swaggerDescriptions
- * @param {SwaggerResponses} swaggerResponses
+ * useDocs creates a documentation route under '/docs' with swagger documentation
  */
 export function useDocs(
     app: Application, 
-    routes: any[],
+    routes: AppRouter[],
     swaggerDescriptions: SwaggerDescriptions,
     swaggerResponses: SwaggerResponses,
     )
