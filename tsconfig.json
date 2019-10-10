@@ -1,10 +1,16 @@
 {
     "compilerOptions": {
-      "target": "es5",
+      "target": "es2017",
       "module": "commonjs",
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "downlevelIteration": true,
+      "noUnusedLocals": true,
+      "noImplicitAny": false,
+      "sourceMap": false,
       "declaration": true,
-      "outDir": "./lib",
-      "strict": true,
+      "outDir": "./lib"
     },
-    "exclude": [ "node_modules","src/test", "lib"],
+    "exclude": [ "node_modules","src/test", "lib"]
   }

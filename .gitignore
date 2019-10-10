@@ -1,5 +1,5 @@
 node_modules
 lib
 package-lock.json
-test
 .vscode
+.nyc_output
