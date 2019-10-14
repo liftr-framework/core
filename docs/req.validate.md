@@ -5,6 +5,3 @@ Under the `Request` object of Express you have access to a validation method. Th
 - `data` `<any>` Data that requires validation
 - `schema` `<joi.Schema>` joi.Schema used to validate whatever is passed in the first parameter
 - `options` `<joi.ValidationOptions>` options for the joi.validate function
-
-
-
