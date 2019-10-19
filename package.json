@@ -1,6 +1,6 @@
 {
   "name": "@liftr/core",
-  "version": "1.0.0-beta.0",
+  "version": "1.0.0",
   "description": "The core package for the Liftr framework",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -11,6 +11,12 @@
     "test:unit": "nyc mocha",
     "test:watch": "mocha --watch"
   },
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "swagger",
+    "framework"
+  ],
   "author": "Faris Tangastani @farisT",
   "license": "MIT",
   "devDependencies": {

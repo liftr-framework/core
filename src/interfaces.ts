@@ -30,7 +30,7 @@ export interface SwaggerServers {
 
 export interface AppRouter {
     path: string;
-    module: ModuleReturnData;
+    module: ModuleComponent;
     middleware: any[];
     schema?: Schema;
 }
@@ -67,7 +67,7 @@ export interface DocumentationObject {
     parentRoute: string;
 }
 
-export interface ModuleReturnData {
+export interface ModuleComponent {
     router: Router;
     moduleData: ModuleData[];
 }

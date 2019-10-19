@@ -1,11 +1,11 @@
 import { Router, RequestHandler } from "express";
-import { RouteComponent, ModuleData, ModuleReturnData } from "../interfaces";
+import { RouteComponent, ModuleData, ModuleComponent } from "../interfaces";
 
 /**
  * The Module is a structure to builds the routes with related middleware
  * It has an optional schema inclusion for creating documentation of your routes
  */
-export function Module(moduleData: ModuleData[]) : ModuleReturnData {
+export function Module(moduleData: ModuleData[]) : ModuleComponent {
     const router = Router();
     for (let index = 0; index < moduleData.length; index++) {
         const middleware = moduleData[index].middleware;
