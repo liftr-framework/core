@@ -1,25 +1,7 @@
 import { Application, Request, Response, NextFunction } from 'express';
-import { ValidationOptions, Schema } from 'joi';
+import { validate } from 'joi';
 import { AppRouter } from './interfaces';
 
-declare global {
-    namespace Express {
-        export interface Request  {
-        validate(data: any, schema: Schema, options?: ValidationOptions): Promise<any>;
-      }
-  }
-}
-/**
- * joi validation under the hood passing the data and schema
- */
-export async function validate(data: any, schema: Schema, options?: ValidationOptions): Promise<any> {
-    try {
-		const validation = require('joi').validate;
-    	return await validation(data, schema, options)
-    } catch(error) {
-		throw error;
-    }
-}
 
 /**
  * Applies the req.validate to the request object with joi validation function
