@@ -1,6 +1,6 @@
 {
   "name": "@liftr/core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The core package for the Liftr framework",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
