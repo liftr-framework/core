@@ -12,9 +12,13 @@ declare global {
 /**
  * joi validation under the hood passing the data and schema
  */
-export function validate(data: any, schema: Schema, options?: ValidationOptions): any {
-    const validation = require('joi').validate;
-    return validation(data, schema, options)
+export async function validate(data: any, schema: Schema, options?: ValidationOptions): Promise<any> {
+    try {
+		const validation = require('joi').validate;
+    	return await validation(data, schema, options)
+    } catch(error) {
+		throw error;
+    }
 }
 
 /**
@@ -31,7 +35,7 @@ export function setValidationObject(app: Application): void {
  * The setRoutes method loops through the routes and sets them on the Application server
 */
 export function setRoutes(app: Application, routes: AppRouter[]) {
-    return routes.forEach((route: AppRouter) => app.use(route.path, route.middleware, route.module.router));
+  	return routes.forEach((route: AppRouter) => app.use(route.path, route.middleware, route.module.router));
 }
 
 /**
