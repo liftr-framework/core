@@ -1,6 +1,6 @@
 {
   "name": "@liftr/core",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "The core package for the Liftr framework",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -36,9 +36,11 @@
     "typescript": "^3.4.5"
   },
   "dependencies": {
-    "express": "^4.17.0",
-    "joi": "^13.3.0",
     "joi-to-swagger": "^3.2.0",
     "swagger-ui-express": "^4.0.7"
+  },
+  "peerDependencies": {
+    "express": "^4.17.0",
+    "joi": "^13.3.0"
   }
 }
