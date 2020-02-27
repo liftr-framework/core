@@ -1,7 +1,7 @@
 export * from './core';
 export * from './interfaces';
 export * from './components/router';
-import Joi, { ValidationError, ValidationOptions, ValidationResult, SchemaLike } from 'joi';
+import Joi, { ValidationError, ValidationOptions, ValidationResult, SchemaLike } from '@hapi/joi';
 
 declare global {
     namespace Express {

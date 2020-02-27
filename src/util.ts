@@ -1,5 +1,5 @@
 import { Application, Request, Response, NextFunction } from 'express';
-import { validate } from 'joi';
+import { validate } from '@hapi/joi';
 import { AppRouter } from './interfaces';
 
 
