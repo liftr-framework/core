@@ -11,6 +11,10 @@
     "test:unit": "nyc mocha",
     "test:watch": "mocha --watch"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liftr-framework/core.git"
+  },
   "keywords": [
     "typescript",
     "nodejs",
